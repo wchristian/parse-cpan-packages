@@ -1,5 +1,8 @@
 CHANGES file for Parse::CPAN::Packages
 
+2.32 Sun Dec 26 14:02:59 GMT+2 2010
+  - better windows compatibility
+
 2.31 Thu Apr 23 11:55:59 BST 2009
   - use BUILDARGS and BUILD instead of having our own constructor
 

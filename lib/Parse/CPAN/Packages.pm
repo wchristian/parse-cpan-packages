@@ -5,7 +5,7 @@ use Compress::Zlib;
 use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
 use version;
-our $VERSION = '2.31';
+our $VERSION = '2.32';
 
 has 'filename'    => ( is => 'rw', isa => 'Str' );
 has 'details'     => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
@@ -39,6 +39,7 @@ sub _slurp_details {
         return $filename;
     } elsif ( $filename =~ /\.gz/ ) {
         open( IN, $filename ) || die "Failed to read $filename: $!";
+		binmode *IN;
         my $data = join '', <IN>;
         close(IN);
         return Compress::Zlib::memGunzip($data);
@@ -46,8 +47,10 @@ sub _slurp_details {
         return Compress::Zlib::memGunzip($filename);
     } else {
         open( IN, $filename ) || die "Failed to read $filename: $!";
-        return join '', <IN>;
+        binmode *IN;
+        my $data = join '', <IN>;
         close(IN);
+		return $data;
     }
 }
 
