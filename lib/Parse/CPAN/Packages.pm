@@ -312,6 +312,15 @@ file. You should do this yourself.  For example:
    my $data = get("http://www.cpan.org/modules/02packages.details.txt.gz");
    my $p = Parse::CPAN::Packages->new($data);
 
+If you have a configured L<CPAN>, then there's usually already a
+cached file available:
+
+   use CPAN;
+   $CPAN::Be_Silent = 1;
+   CPAN::HandleConfig->load;
+   my $file = $CPAN::Config->{keep_source_where} . "/modules/02packages.details.txt.gz";
+   my $p = Parse::CPAN::Packages->new($file);
+
 =item package($packagename)
 
 Returns a C<Parse::CPAN::Packages::Package> that represents the
