@@ -64,10 +64,9 @@ foreach my $subname (
 
 sub parse {
     my ( $self, $filename ) = @_;
-    my $details = $self->_slurp_details($filename);
 
     # read the preamble
-    my @details = split "\n", $details;
+    my @details = split "\n", $self->_slurp_details($filename);
     while (@details) {
         local $_ = shift @details;
         last if /^\s*$/;
