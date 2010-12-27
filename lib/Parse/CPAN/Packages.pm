@@ -325,7 +325,7 @@ cached file available:
 Returns a C<Parse::CPAN::Packages::Package> that represents the
 named package.
 
-  my $p = Parse::CPAN::Distribution->new($gzfilename);
+  my $p = Parse::CPAN::Packages->new($gzfilename);
   my $package = $p->package("Acme::Colour");
 
 =item packages()
@@ -335,20 +335,20 @@ representing all the packages that were extracted from the file.
 
 =item package_count()
 
-Returns the numebr of packages stored.
+Returns the number of packages stored.
 
 =item distribution($filename)
 
-Returns a B<Parse::CPAN::Distribution> that represents the
-filename passed:
+Returns a B<Parse::CPAN::Packages::Distribution> object that
+represents the filename passed:
 
-  my $p = Parse::CPAN::Distribution->new($gzfilename);
+  my $p = Parse::CPAN::Packages->new($gzfilename);
   my $dist = $p->distribution('L/LB/LBROCARD/Acme-Colour-1.00.tar.gz');
 
 =item distributions()
 
-Returns a list of B<Parse::CPAN::Distribution> objects representing
-all the known distributions.
+Returns a list of B<Parse::CPAN::Packages::Distribution> objects
+representing all the known distributions.
 
 =item distribution_count()
 
@@ -356,18 +356,19 @@ Returns the number of distributions stored.
 
 =item latest_distribution($distname)
 
-Returns the C<Parse::CPAN::Distribution> that represents the latest
-distribution for the named disribution passed, that is to say it
-returns the distribution that has the highest version number (as
-determined by version.pm or number comparison if that fails):
+Returns the C<Parse::CPAN::Packages::Distribution> object that
+represents the latest distribution for the named disribution passed,
+that is to say it returns the distribution that has the highest
+version number (as determined by version.pm or number comparison if
+that fails):
 
-  my $p = Parse::CPAN::Distribution->new($gzfilename);
+  my $p = Parse::CPAN::Packages->new($gzfilename);
   my $dist = $p->distribution('Acme-Color');
 
 =item latest_distrbutions()
 
-Returns a list of B<Parse::CPAN::Distribution> objects representing
-all the latest distributions.
+Returns a list of B<Parse::CPAN::Packages::Distribution> objects
+representing all the latest distributions.
 
 =item latest_distribution_count()
 
