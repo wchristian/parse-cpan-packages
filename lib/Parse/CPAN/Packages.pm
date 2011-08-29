@@ -25,7 +25,7 @@ sub BUILD {
     my $filename = $self->filename;
 
     # read the file then parse it if present
-    $self->parse($filename) if $filename;
+    $self->parse( $filename ) if $filename;
 
     return $self;
 }
@@ -37,27 +37,27 @@ sub _slurp_details {
 
     if ( $filename =~ /Description:/ ) {
         return $filename;
-    } elsif ( $filename =~ /\.gz/ ) {
-        open( IN, $filename ) || die "Failed to read $filename: $!";
-		binmode *IN;
-        my $data = join '', <IN>;
-        close(IN);
-        return Compress::Zlib::memGunzip($data);
-    } elsif ( $filename =~ /^\037\213/ ) {
-        return Compress::Zlib::memGunzip($filename);
-    } else {
+    }
+    elsif ( $filename =~ /\.gz/ ) {
         open( IN, $filename ) || die "Failed to read $filename: $!";
         binmode *IN;
         my $data = join '', <IN>;
-        close(IN);
-		return $data;
+        close( IN );
+        return Compress::Zlib::memGunzip( $data );
+    }
+    elsif ( $filename =~ /^\037\213/ ) {
+        return Compress::Zlib::memGunzip( $filename );
+    }
+    else {
+        open( IN, $filename ) || die "Failed to read $filename: $!";
+        binmode *IN;
+        my $data = join '', <IN>;
+        close( IN );
+        return $data;
     }
 }
 
-foreach my $subname (
-    qw(file url description columns intended_for written_by line_count last_updated)
-    )
-{
+for my $subname ( qw(file url description columns intended_for written_by line_count last_updated) ) {
     no strict 'refs';
     *{$subname} = sub { return shift->{preamble}{$subname} };
 }
@@ -66,18 +66,18 @@ sub parse {
     my ( $self, $filename ) = @_;
 
     # read the preamble
-    my @details = split "\n", $self->_slurp_details($filename);
-    while (@details) {
+    my @details = split "\n", $self->_slurp_details( $filename );
+    while ( @details ) {
         local $_ = shift @details;
         last if /^\s*$/;
         next unless /^([^:]+):\s*(.*)/;
-        my ( $key, $value ) = ( lc($1), $2 );
+        my ( $key, $value ) = ( lc( $1 ), $2 );
         $key =~ tr/-/_/;
         $self->{preamble}{$key} = $value;
     }
 
     # run though each line of the file
-    foreach my $line (@details) {
+    for my $line ( @details ) {
 
         # make a package object from the line
         my ( $package_name, $package_version, $prefix ) = split ' ', $line;
@@ -89,11 +89,12 @@ sub add_quick {
     my ( $self, $package_name, $package_version, $prefix ) = @_;
 
     # create a distribution object (or get an existing one)
-    my $dist = $self->distribution_from_prefix($prefix);
+    my $dist = $self->distribution_from_prefix( $prefix );
 
     # create the package object
     my $m = Parse::CPAN::Packages::Package->new(
-        {   package      => $package_name,
+        {
+            package      => $package_name,
             version      => $package_version,
             distribution => $dist
         }
@@ -101,24 +102,25 @@ sub add_quick {
 
     # make the package have the distribion and the distribution
     # have the package.  Yes, this creates a cirtular reference.  eek!
-    $dist->add_package($m);
+    $dist->add_package( $m );
 
     # record this distribution and package
-    $self->add_distribution($dist);
-    $self->add_package($m);
+    $self->add_distribution( $dist );
+    $self->add_package( $m );
 }
 
 sub distribution_from_prefix {
     my ( $self, $prefix ) = @_;
 
     # see if we have one of these already and return it if we do.
-    my $d = $self->distribution($prefix);
+    my $d = $self->distribution( $prefix );
     return $d if $d;
 
     # create a new one otherwise
-    my $i = CPAN::DistnameInfo->new($prefix);
+    my $i = CPAN::DistnameInfo->new( $prefix );
     $d = Parse::CPAN::Packages::Distribution->new(
-        {   prefix    => $prefix,
+        {
+            prefix    => $prefix,
             dist      => $i->dist,
             version   => $i->version,
             maturity  => $i->maturity,
@@ -152,8 +154,8 @@ sub packages {
 sub add_distribution {
     my ( $self, $dist ) = @_;
 
-    $self->_store_distribution($dist);
-    $self->_ensure_latest_distribution($dist);
+    $self->_store_distribution( $dist );
+    $self->_ensure_latest_distribution( $dist );
 }
 
 sub _store_distribution {
@@ -166,8 +168,8 @@ sub _ensure_latest_distribution {
     my ( $self, $new ) = @_;
 
     my $latest = $self->latest_distribution( $new->dist );
-    unless ($latest) {
-        $self->_set_latest_distribution($new);
+    unless ( $latest ) {
+        $self->_set_latest_distribution( $new );
         return;
     }
     my $new_version    = $new->version;
@@ -181,12 +183,13 @@ sub _ensure_latest_distribution {
     };
     if ( $newv && $latestv ) {
         if ( $newv > $latestv ) {
-            $self->_set_latest_distribution($new);
+            $self->_set_latest_distribution( $new );
         }
-    } else {
+    }
+    else {
         no warnings;
         if ( $new_version > $latest_version ) {
-            $self->_set_latest_distribution($new);
+            $self->_set_latest_distribution( $new );
         }
     }
 }
