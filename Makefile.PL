@@ -9,11 +9,14 @@ WriteMakefile(
     ABSTRACT     => 'Parse 02packages.details.txt.gz',
     LICENSE      => 'perl',
     PREREQ_PM    => {
-        'Compress::Zlib'     => 0,
-        'CPAN::DistnameInfo' => 0,
-        'Moose'              => 0,
-        'Test::More'         => 0,
-        'version'            => 0,
+        map { $_ => 0 }
+          qw(
+          Compress::Zlib
+          CPAN::DistnameInfo
+          Moose
+          Test::More
+          version
+          )
     }
 );
 
