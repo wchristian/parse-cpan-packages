@@ -2,6 +2,7 @@ package Parse::CPAN::Packages;
 use Moose;
 use CPAN::DistnameInfo;
 use Compress::Zlib;
+use File::Slurp 'read_file';
 use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
 use version;
@@ -39,20 +40,14 @@ sub _slurp_details {
         return $filename;
     }
     elsif ( $filename =~ /\.gz/ ) {
-        open( IN, $filename ) || die "Failed to read $filename: $!";
-        binmode *IN;
-        my $data = join '', <IN>;
-        close( IN );
+        my $data = read_file( $filename, binmode => ':raw' );
         return Compress::Zlib::memGunzip( $data );
     }
     elsif ( $filename =~ /^\037\213/ ) {
         return Compress::Zlib::memGunzip( $filename );
     }
     else {
-        open( IN, $filename ) || die "Failed to read $filename: $!";
-        binmode *IN;
-        my $data = join '', <IN>;
-        close( IN );
+        my $data = read_file( $filename );
         return $data;
     }
 }

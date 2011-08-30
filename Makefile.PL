@@ -13,6 +13,7 @@ WriteMakefile(
           qw(
           Compress::Zlib
           CPAN::DistnameInfo
+          File::Slurp
           Moose
           Test::More
           version

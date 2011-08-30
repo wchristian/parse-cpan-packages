@@ -2,6 +2,7 @@
 use strict;
 use lib 'lib';
 use Test::More tests => 38;
+use File::Slurp 'read_file';
 use_ok("Parse::CPAN::Packages");
 
 my $p = Parse::CPAN::Packages->new("t/02packages.details.txt");
@@ -84,9 +85,7 @@ is( $p->package_count(),             scalar @packages, "package count" );
 is( $p->distribution_count(),        7,                "dist count" );
 is( $p->latest_distribution_count(), 6,                "latest dist count" );
 
-open( IN, "t/02packages.details.txt" );
-my $details = join '', <IN>;
-close(IN);
+my $details = read_file( "t/02packages.details.txt" );
 
 # Try the interface which takes in the contents
 
@@ -114,9 +113,7 @@ is_deeply(
 
 # Try the interface which takes in gzipped contents
 
-open( IN, "t/02packages.details.txt.gz" );
-$details = join '', <IN>;
-close(IN);
+$details = read_file( "t/02packages.details.txt.gz", binmode => ':raw' );
 
 $p = Parse::CPAN::Packages->new($details);
 isa_ok( $p, "Parse::CPAN::Packages" );
