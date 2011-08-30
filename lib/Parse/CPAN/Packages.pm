@@ -2,13 +2,16 @@ package Parse::CPAN::Packages;
 use Moose;
 use CPAN::DistnameInfo;
 use Compress::Zlib;
+use Path::Class ();
 use File::Slurp 'read_file';
 use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
 use version;
 our $VERSION = '2.33';
 
-has 'filename'    => ( is => 'rw', isa => 'Str' );
+has 'filename' => ( is => 'rw', isa => 'Str' );
+has 'mirror_dir' => ( is => 'rw', isa => 'Str|Undef', lazy_build => 1 );
+
 has 'details'     => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
 has 'data'        => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
 has 'dists'       => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
@@ -17,8 +20,9 @@ has 'latestdists' => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
 __PACKAGE__->meta->make_immutable;
 
 sub BUILDARGS {
-    my ( $class, $filename ) = @_;
-    return { filename => $filename };
+    my ( $class, @args ) = @_;
+    return {@args} if @args > 1;
+    return { filename => $args[0] };
 }
 
 sub BUILD {
@@ -29,6 +33,14 @@ sub BUILD {
     $self->parse( $filename ) if $filename;
 
     return $self;
+}
+
+sub _build_mirror_dir {
+    my ( $self ) = @_;
+    return if $self->filename =~ /\n/;
+    return if !-f $self->filename;
+    my $dir = Path::Class::file( $self->filename )->dir->parent;
+    return $dir->stringify;
 }
 
 # read the file into memory and return it
@@ -111,13 +123,14 @@ sub distribution_from_prefix {
     my $i = CPAN::DistnameInfo->new( $prefix );
     $d = Parse::CPAN::Packages::Distribution->new(
         {
-            prefix    => $prefix,
-            dist      => $i->dist,
-            version   => $i->version,
-            maturity  => $i->maturity,
-            filename  => $i->filename,
-            cpanid    => $i->cpanid,
-            distvname => $i->distvname
+            prefix     => $prefix,
+            dist       => $i->dist,
+            version    => $i->version,
+            maturity   => $i->maturity,
+            filename   => $i->filename,
+            cpanid     => $i->cpanid,
+            distvname  => $i->distvname,
+            mirror_dir => $self->mirror_dir,
         }
     );
     return $d;

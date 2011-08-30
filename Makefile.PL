@@ -11,13 +11,14 @@ WriteMakefile(
     PREREQ_PM    => {
         map { $_ => 0 }
           qw(
+          Archive::Peek
           Compress::Zlib
           CPAN::DistnameInfo
           File::Slurp
           Moose
+          Path::Class
           Test::More
           version
           )
     }
 );
-

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use Test::InDistDir;
-use Test::More tests => 38;
+use Test::More tests => 50;
 use File::Slurp 'read_file';
 
 run();
@@ -17,6 +17,9 @@ sub run {
     creation_check( "t/02packages.details.txt.gz", "gzip file is parsed" );
     creation_check( $raw_data,                     "text contents are parsed" );
     creation_check( $gz_data,                      "gzip contents are parsed" );
+
+    dist_contents( "t/mirror/modules/02packages.details.txt.gz", "mirror file with implicit mirror directory" );
+    dist_contents( filename => "t/02packages.details.txt", mirror_dir => "t/mirror", "mirror file with explicit mirror dir" );
 
     return;
 }
@@ -74,6 +77,22 @@ sub default_features {
     is( $p->package_count,             scalar @packages, "package count" );
     is( $p->distribution_count,        7,                "dist count" );
     is( $p->latest_distribution_count, 6,                "latest dist count" );
+
+    return;
+}
+
+sub dist_contents {
+    my ( $p ) = creation_check( @_ );
+
+    my $file = "Acme-Comment-1.02/lib/Acme/Comment.pm";
+
+    my $first_dist = ( $p->distributions )[0];
+    is( ( $first_dist->list_files )[0], $file, "listing files in dists works" );
+
+    my $first_pkg = ( $p->packages )[0];
+    is( $first_pkg->filename,                        $file, "a package can generate a good guess file name" );
+    is( $first_dist->get_file_from_tarball( $file ), "moo", "getting the content of a file in a dist works" );
+    is( $first_pkg->file_content,                    "moo", "a package can provide the content of its file" );
 
     return;
 }
