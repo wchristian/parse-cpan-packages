@@ -1,6 +1,6 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 use strict;
-use lib 'lib';
+use Test::InDistDir;
 use Test::More tests => 38;
 use File::Slurp 'read_file';
 use_ok("Parse::CPAN::Packages");
