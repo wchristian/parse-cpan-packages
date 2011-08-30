@@ -36,20 +36,16 @@ sub _slurp_details {
     my ( $self, $filename ) = @_;
     $filename ||= '02packages.details.txt.gz';
 
-    if ( $filename =~ /Description:/ ) {
-        return $filename;
-    }
-    elsif ( $filename =~ /\.gz/ ) {
-        my $data = read_file( $filename, binmode => ':raw' );
-        return Compress::Zlib::memGunzip( $data );
-    }
-    elsif ( $filename =~ /^\037\213/ ) {
-        return Compress::Zlib::memGunzip( $filename );
-    }
-    else {
-        my $data = read_file( $filename );
-        return $data;
-    }
+    return $filename if $filename =~ /Description:/;
+    return Compress::Zlib::memGunzip( $filename ) if $filename =~ /^\037\213/;
+
+    my @read_params = ( $filename );
+    push @read_params, ( binmode => ':raw' ) if $filename =~ /\.gz/;
+
+    my $data = read_file( @read_params );
+
+    return Compress::Zlib::memGunzip( $data ) if $filename =~ /\.gz/;
+    return $data;
 }
 
 for my $subname ( qw(file url description columns intended_for written_by line_count last_updated) ) {
@@ -163,7 +159,7 @@ sub _ensure_latest_distribution {
     my ( $self, $new ) = @_;
 
     my $latest = $self->latest_distribution( $new->dist );
-    unless ( $latest ) {
+    if ( !$latest ) {
         $self->_set_latest_distribution( $new );
         return;
     }
@@ -176,17 +172,18 @@ sub _ensure_latest_distribution {
         $newv    = version->new( $new_version    || 0 );
         $latestv = version->new( $latest_version || 0 );
     };
-    if ( $newv && $latestv ) {
-        if ( $newv > $latestv ) {
-            $self->_set_latest_distribution( $new );
-        }
-    }
-    else {
-        no warnings;
-        if ( $new_version > $latest_version ) {
-            $self->_set_latest_distribution( $new );
-        }
-    }
+
+    $self->_set_latest_distribution( $new ) if $self->_dist_is_latest( $newv, $latestv, $new_version, $latest_version );
+
+    return;
+}
+
+sub _dist_is_latest {
+    my ( $self, $newv, $latestv, $new_version, $latest_version ) = @_;
+    return 1 if $newv && $latestv && $newv > $latestv;
+    no warnings;
+    return 1 if $new_version > $latest_version;
+    return 0;
 }
 
 sub distribution {
