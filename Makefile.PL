@@ -17,6 +17,7 @@ WriteMakefile(
           File::Slurp
           Moose
           Path::Class
+          Test::InDistDir
           Test::More
           version
           )

@@ -1,5 +1,9 @@
 CHANGES file for Parse::CPAN::Packages
 
+2.34 Tue Aug 30 15:03:00 GMT+2 2011
+  - added methods to the generated objects to try and retrieve dist contents from a local cpan mirror
+  - some refactoring/cleanup with no functional changes
+
 2.33 Sun Dec 27 10:42:59 GMT+2 2010
   - updated documentation
     - explanation on how to use local cpan cache ( thanks to Slaven Rezić <SREZIC@cpan.org> )
