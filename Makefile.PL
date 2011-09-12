@@ -17,6 +17,7 @@ WriteMakefile(
           File::Slurp
           Moose
           Path::Class
+          PPI
           Test::InDistDir
           Test::More
           version
