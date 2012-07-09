@@ -1,5 +1,7 @@
 CHANGES file for Parse::CPAN::Packages
 
+  - moved author tests to xt to avoid them being run on the user side
+
 2.35 Mon Sep 12 21:47:00 GMT+2 2011
   - added rudimentary logic to return the subs in a package, as well as verify via regex whether a given sub is in the package
 
