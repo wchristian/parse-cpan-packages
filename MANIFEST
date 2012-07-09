@@ -9,6 +9,6 @@ t/02packages.details.txt
 t/02packages.details.txt.gz
 t/mirror/authors/id/K/KA/KANE/Acme-Comment-1.02.tar.gz
 t/mirror/modules/02packages.details.txt.gz
-t/pod.t
-t/pod_coverage.t
 t/simple.t
+xt/pod.t
+xt/pod_coverage.t

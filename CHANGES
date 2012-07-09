@@ -1,5 +1,6 @@
 CHANGES file for Parse::CPAN::Packages
 
+2.36 Mon Jul  9 13:58:00 GMT+2 2012
   - moved author tests to xt to avoid them being run on the user side
 
 2.35 Mon Sep 12 21:47:00 GMT+2 2011
