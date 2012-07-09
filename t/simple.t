@@ -1,10 +1,11 @@
 #!/usr/bin/perl
 use strict;
 use Test::InDistDir;
-use Test::More tests => 50;
+use Test::More;
 use File::Slurp 'read_file';
 
 run();
+done_testing;
 
 sub run {
     use_ok( "Parse::CPAN::Packages" );
@@ -99,7 +100,8 @@ sub dist_contents {
 
 sub creation_check {
     my $reason = pop;
-    my $p      = Parse::CPAN::Packages->new( @_ );
+    my $p = eval { Parse::CPAN::Packages->new( @_ ) };
+    is( $@, "", "no errors from the eval" );
     isa_ok( $p, "Parse::CPAN::Packages" );
 
     my @packages = sort map { $_->package } $p->packages;
