@@ -1,5 +1,8 @@
 CHANGES file for Parse::CPAN::Packages
 
+2.37 Mon Jul 23 21:59:55 BST 2012
+  - Version bump to repackage due to issue installing using cpanm
+
 2.36 Mon Jul  9 13:58:00 GMT+2 2012
   - moved author tests to xt to avoid them being run on the user side
 
