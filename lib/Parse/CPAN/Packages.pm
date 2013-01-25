@@ -7,7 +7,7 @@ use File::Slurp 'read_file';
 use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
 use version;
-our $VERSION = '2.37';
+our $VERSION = '2.38';
 
 has 'filename' => ( is => 'rw', isa => 'Str' );
 has 'mirror_dir' => ( is => 'rw', isa => 'Str|Undef', lazy_build => 1 );

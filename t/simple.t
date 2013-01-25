@@ -85,15 +85,14 @@ sub default_features {
 sub dist_contents {
     my ( $p ) = creation_check( @_ );
 
-    my $file = "Acme-Comment-1.02/lib/Acme/Comment.pm";
+    my $test_dist = $p->dists->{"K/KA/KANE/Acme-Comment-1.02.tar.gz"};
+    my $file      = "Acme-Comment-1.02/lib/Acme/Comment.pm";
+    is( ( $test_dist->list_files )[0], $file, "listing files in dists works" );
 
-    my $first_dist = ( $p->distributions )[0];
-    is( ( $first_dist->list_files )[0], $file, "listing files in dists works" );
-
-    my $first_pkg = ( $p->packages )[0];
-    is( $first_pkg->filename,                        $file, "a package can generate a good guess file name" );
-    is( $first_dist->get_file_from_tarball( $file ), "moo", "getting the content of a file in a dist works" );
-    is( $first_pkg->file_content,                    "moo", "a package can provide the content of its file" );
+    my $test_pkg = $p->data->{"Acme::Comment"};
+    is( $test_pkg->filename,                        $file, "a package can generate a good guess file name" );
+    is( $test_dist->get_file_from_tarball( $file ), "moo", "getting the content of a file in a dist works" );
+    is( $test_pkg->file_content,                    "moo", "a package can provide the content of its file" );
 
     return;
 }

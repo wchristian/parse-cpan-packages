@@ -1,5 +1,8 @@
 CHANGES file for Parse::CPAN::Packages
 
+2.38 Mon Dec  3 14:57:00 BST 2012
+  - removed some dependency on hash ordering in the tests
+
 2.37 Mon Jul 23 21:59:55 BST 2012
   - Version bump to repackage due to issue installing using cpanm
 
