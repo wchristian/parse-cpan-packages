@@ -22,5 +22,16 @@ WriteMakefile(
           Test::More
           version
           )
-    }
+    },
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        resources   => {
+            repository => {
+                type => 'git',
+                url =>
+                    'https://github.com/wchristian/parse-cpan-packages.git',
+                web => 'https://github.com/wchristian/parse-cpan-packages',
+            },
+        },
+    },
 );
