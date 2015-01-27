@@ -1,19 +1,18 @@
 package Parse::CPAN::Packages::Distribution;
-use Moose;
+use Moo;
 use Archive::Peek;
 use Path::Class 'file';
+use Types::Standard qw( ArrayRef Maybe Str );
 
-has 'prefix'     => ( is => 'rw', isa => 'Str' );
-has 'dist'       => ( is => 'rw', isa => 'Str|Undef' );
-has 'version'    => ( is => 'rw', isa => 'Str|Undef' );
-has 'maturity'   => ( is => 'rw', isa => 'Str' );
-has 'filename'   => ( is => 'rw', isa => 'Str' );
-has 'cpanid'     => ( is => 'rw', isa => 'Str' );
-has 'distvname'  => ( is => 'rw', isa => 'Str|Undef' );
-has 'packages'   => ( is => 'rw', isa => 'ArrayRef', default => sub { [] } );
-has 'mirror_dir' => ( is => 'rw', isa => 'Str|Undef' );
-
-__PACKAGE__->meta->make_immutable;
+has 'prefix'     => ( is => 'rw', isa => Str );
+has 'dist'       => ( is => 'rw', isa => Maybe[ Str ] );
+has 'version'    => ( is => 'rw', isa => Maybe[ Str ] );
+has 'maturity'   => ( is => 'rw', isa => Str );
+has 'filename'   => ( is => 'rw', isa => Str );
+has 'cpanid'     => ( is => 'rw', isa => Str );
+has 'distvname'  => ( is => 'rw', isa => Maybe[ Str ] );
+has 'packages'   => ( is => 'rw', isa => ArrayRef, default => sub { [] } );
+has 'mirror_dir' => ( is => 'rw', isa => Maybe[ Str ] );
 
 sub contains {
     my $self = shift;

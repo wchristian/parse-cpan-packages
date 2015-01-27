@@ -15,12 +15,25 @@ WriteMakefile(
           Compress::Zlib
           CPAN::DistnameInfo
           File::Slurp
-          Moose
+          Moo
           Path::Class
           PPI
           Test::InDistDir
           Test::More
+          Type::Utils
+          Types::Standard
           version
           )
-    }
+    },
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        resources   => {
+            repository => {
+                type => 'git',
+                url =>
+                    'https://github.com/wchristian/parse-cpan-packages.git',
+                web => 'https://github.com/wchristian/parse-cpan-packages',
+            },
+        },
+    },
 );
