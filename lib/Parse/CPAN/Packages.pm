@@ -1,23 +1,22 @@
 package Parse::CPAN::Packages;
-use Moose;
+use Moo;
 use CPAN::DistnameInfo;
 use Compress::Zlib;
 use Path::Class ();
 use File::Slurp 'read_file';
 use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
+use Types::Standard qw( HashRef Maybe Str );
 use version;
 our $VERSION = '2.38';
 
-has 'filename' => ( is => 'rw', isa => 'Str' );
-has 'mirror_dir' => ( is => 'rw', isa => 'Str|Undef', lazy_build => 1 );
+has 'filename' => ( is => 'rw', isa => Str );
+has 'mirror_dir' => ( is => 'lazy', isa => Maybe [Str] );
 
-has 'details'     => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
-has 'data'        => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
-has 'dists'       => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
-has 'latestdists' => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
-
-__PACKAGE__->meta->make_immutable;
+has 'details'     => ( is => 'rw', isa => HashRef, default => sub { {} } );
+has 'data'        => ( is => 'rw', isa => HashRef, default => sub { {} } );
+has 'dists'       => ( is => 'rw', isa => HashRef, default => sub { {} } );
+has 'latestdists' => ( is => 'rw', isa => HashRef, default => sub { {} } );
 
 sub BUILDARGS {
     my ( $class, @args ) = @_;

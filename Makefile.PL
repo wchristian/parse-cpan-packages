@@ -15,11 +15,13 @@ WriteMakefile(
           Compress::Zlib
           CPAN::DistnameInfo
           File::Slurp
-          Moose
+          Moo
           Path::Class
           PPI
           Test::InDistDir
           Test::More
+          Type::Utils
+          Types::Standard
           version
           )
     },
