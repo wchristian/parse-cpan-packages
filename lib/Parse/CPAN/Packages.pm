@@ -8,7 +8,7 @@ use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
 use Types::Standard qw( HashRef Maybe Str );
 use version;
-our $VERSION = '2.38';
+our $VERSION = '2.39';
 
 has 'filename' => ( is => 'rw', isa => Str );
 has 'mirror_dir' => ( is => 'lazy', isa => Maybe [Str] );

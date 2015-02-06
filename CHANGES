@@ -1,5 +1,9 @@
 CHANGES file for Parse::CPAN::Packages
 
+2.39 Fri Feb  6 23:44:00 BST 2015
+  - ported from Moo to Moose ( thanks to Olaf Alders <olaf@wundercounter.com> )
+  - github repo added to metadata ( thanks to Olaf Alders <olaf@wundercounter.com> )
+
 2.38 Mon Dec  3 14:57:00 BST 2012
   - removed some dependency on hash ordering in the tests
 
