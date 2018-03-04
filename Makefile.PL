@@ -14,6 +14,7 @@ WriteMakefile(
           Archive::Peek
           Compress::Zlib
           CPAN::DistnameInfo
+          CPAN::Meta
           File::Slurp
           Moo
           Path::Class
