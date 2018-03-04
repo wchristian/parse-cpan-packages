@@ -2,7 +2,7 @@
 use strict;
 use Test::InDistDir;
 use Test::More;
-use File::Slurp 'read_file';
+use File::Slurper ();
 
 run();
 done_testing;
@@ -12,8 +12,8 @@ sub run {
 
     default_features();
 
-    my $raw_data = read_file( "t/02packages.details.txt" );
-    my $gz_data = read_file( "t/02packages.details.txt.gz", binmode => ':raw' );
+    my $raw_data = File::Slurper::read_text( "t/02packages.details.txt" );
+    my $gz_data = File::Slurper::read_binary( "t/02packages.details.txt.gz" );
 
     creation_check( "t/02packages.details.txt.gz", "gzip file is parsed" );
     creation_check( $raw_data,                     "text contents are parsed" );

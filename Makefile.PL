@@ -14,7 +14,7 @@ WriteMakefile(
           Archive::Peek
           Compress::Zlib
           CPAN::DistnameInfo
-          File::Slurp
+          File::Slurper
           Moo
           Path::Class
           PPI
