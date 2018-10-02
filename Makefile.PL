@@ -14,9 +14,9 @@ WriteMakefile(
           Archive::Peek
           Compress::Zlib
           CPAN::DistnameInfo
-          File::Slurp
           Moo
           Path::Class
+          Path::Tiny
           PPI
           Test::InDistDir
           Test::More
