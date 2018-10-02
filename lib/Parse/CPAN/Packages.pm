@@ -3,7 +3,7 @@ use Moo;
 use CPAN::DistnameInfo;
 use Compress::Zlib;
 use Path::Class ();
-use File::Slurp 'read_file';
+use Path::Tiny;
 use Parse::CPAN::Packages::Distribution;
 use Parse::CPAN::Packages::Package;
 use Types::Standard qw( HashRef Maybe Str );
@@ -50,10 +50,9 @@ sub _slurp_details {
     return $filename if $filename =~ /Description:/;
     return Compress::Zlib::memGunzip( $filename ) if $filename =~ /^\037\213/;
 
-    my @read_params = ( $filename );
-    push @read_params, ( binmode => ':raw' ) if $filename =~ /\.gz/;
-
-    my $data = read_file( @read_params );
+    my @slurp_params = ();
+    push @slurp_params, {binmode => ":raw"}  if $filename =~ /\.gz/;
+    my $data = path( $filename )->slurp( @slurp_params );
 
     return Compress::Zlib::memGunzip( $data ) if $filename =~ /\.gz/;
     return $data;
