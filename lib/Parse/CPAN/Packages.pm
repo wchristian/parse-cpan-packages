@@ -102,7 +102,7 @@ sub add_quick {
         }
     );
 
-    # make the package have the distribion and the distribution
+    # make the package have the distribution and the distribution
     # have the package.  Yes, this creates a cirtular reference.  eek!
     $dist->add_package( $m );
 
@@ -364,7 +364,7 @@ Returns the number of distributions stored.
 =item latest_distribution($distname)
 
 Returns the C<Parse::CPAN::Packages::Distribution> object that
-represents the latest distribution for the named disribution passed,
+represents the latest distribution for the named distribution passed,
 that is to say it returns the distribution that has the highest
 version number (as determined by version.pm or number comparison if
 that fails):
@@ -372,7 +372,7 @@ that fails):
   my $p = Parse::CPAN::Packages->new($gzfilename);
   my $dist = $p->distribution('Acme-Color');
 
-=item latest_distrbutions()
+=item latest_distributions()
 
 Returns a list of B<Parse::CPAN::Packages::Distribution> objects
 representing all the latest distributions.
@@ -423,7 +423,7 @@ compressed/1uncompressed file, a uncompressed scalar containing the
 file.  You can also pass nothing to indicate to load the compressed
 file from the current working directory.)
 
-Note that each time this function is run the packages and distribtions
+Note that each time this function is run the packages and distributions
 found will be C<added> to the current list of packages.
 
 =item add_quick($package_name, $package_version, $prefix)
