@@ -103,7 +103,7 @@ sub add_quick {
     );
 
     # make the package have the distribution and the distribution
-    # have the package.  Yes, this creates a cirtular reference.  eek!
+    # have the package.  Yes, this creates a circular reference.  eek!
     $dist->add_package( $m );
 
     # record this distribution and package
